@@ -10,5 +10,7 @@ public interface IUserService {
     Page<UserResponseDTO> getUsers(Pageable pagination);
 
     RegisteredUserResponseDTO createUser(UserRegisterRequestDTO userDto);
+
+    void deleteUser(Long id);
 }
 

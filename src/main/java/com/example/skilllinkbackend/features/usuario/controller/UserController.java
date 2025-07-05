@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +71,8 @@ public class UserController {
             description = "Registro público de un nuevo usuario en la plataforma",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente"),
-                    @ApiResponse(responseCode = "400", description = "Datos inválidos o error en validación", content = @Content)
+                    @ApiResponse(responseCode = "400", description = "Datos inválidos o error en validación", content = @Content),
+                    @ApiResponse(responseCode = "409", description = "Conflicto en la DB", content = @Content)
             }
     )
     @PostMapping("register")
@@ -83,5 +85,21 @@ public class UserController {
                 HttpStatus.CREATED.value(),
                 registeredUserResponseDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Eliminar un usuario por ID",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
+            }
+    )
+    @SecurityRequirement(name = "bearer-key")
+    @DeleteMapping("/{id}")
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

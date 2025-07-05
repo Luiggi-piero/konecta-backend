@@ -11,10 +11,29 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
-    UserDetails findByEmail(String username);
 
-    boolean existsByEmail(String username);
+    @Query("""
+            SELECT u
+            FROM User u
+            WHERE u.enabled = true
+            AND u.email = :email
+            """)
+    UserDetails findByEmail(String email);
 
+    @Query("""
+            SELECT COUNT(u) > 0
+            FROM User u
+            WHERE u.email = :email
+            AND u.enabled = true
+            """)
+    boolean existsByEmail(String email);
+
+    @Query("""
+            SELECT u
+            FROM User u
+            WHERE u.enabled = true
+            AND u.userId = :userId
+            """)
     Optional<User> findByUserId(Long userId);
 
     @Query("""

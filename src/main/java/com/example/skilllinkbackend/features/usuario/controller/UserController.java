@@ -89,6 +89,7 @@ public class UserController {
 
     @Operation(
             summary = "Eliminar un usuario por ID",
+            description = "Solo accesible por usuarios con rol ADMIN",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
@@ -101,5 +102,20 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Obtener un usuario por su ID",
+            description = "Solo accesible por usuarios con rol ADMIN",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
+            }
+    )
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public UserResponseDTO findByUserId(@PathVariable Long id) {
+        return userService.findByUserId(id);
     }
 }

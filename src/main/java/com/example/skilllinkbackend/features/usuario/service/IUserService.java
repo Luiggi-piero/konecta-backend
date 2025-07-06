@@ -12,5 +12,7 @@ public interface IUserService {
     RegisteredUserResponseDTO createUser(UserRegisterRequestDTO userDto);
 
     void deleteUser(Long id);
+
+    UserResponseDTO findByUserId(Long id);
 }
 

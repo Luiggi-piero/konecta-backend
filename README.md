@@ -1,4 +1,4 @@
-## <p align="center"> ROLES PRUEBA 2</p>
+## <p align="center"> KONECTA</p>
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)<br>
 API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login y registro), roles, desafíos, evaluaciones, categorias y proyectos.
 

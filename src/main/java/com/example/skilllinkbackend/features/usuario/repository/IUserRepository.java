@@ -1,6 +1,8 @@
 package com.example.skilllinkbackend.features.usuario.repository;
 
 import com.example.skilllinkbackend.features.usuario.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,4 +44,11 @@ public interface IUserRepository extends JpaRepository<User, Long> {
             WHERE u.enabled = true AND u.email IN :emails
             """)
     List<User> findExistingEmails(List<String> emails);
+
+    @Query("""
+            SELECT u
+            FROM User u
+            WHERE u.enabled = true
+            """)
+    Page<User> findAll(Pageable pagination);
 }

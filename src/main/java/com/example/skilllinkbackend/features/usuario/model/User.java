@@ -3,6 +3,7 @@ package com.example.skilllinkbackend.features.usuario.model;
 import com.example.skilllinkbackend.features.role.model.Role;
 import com.example.skilllinkbackend.features.usuario.dto.UserRegisterRequestDTO;
 import com.example.skilllinkbackend.features.project.model.Project;
+import com.example.skilllinkbackend.features.usuario.dto.UserUpdateDTO;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -171,5 +172,17 @@ public class User implements UserDetails {
 
     public void deactive() {
         this.enabled = false;
+    }
+
+    public void update(UserUpdateDTO userDto, Set<Role> roles) {
+        this.userId = userDto.userId();
+        this.firstName = userDto.firstName();
+        this.lastName = userDto.lastName();
+        this.goals = userDto.goals();
+        this.email = userDto.email();
+        setPassword(userDto.password().toCharArray());
+        this.biography = userDto.biography();
+        this.photo = userDto.photo();
+        this.roles = roles;
     }
 }

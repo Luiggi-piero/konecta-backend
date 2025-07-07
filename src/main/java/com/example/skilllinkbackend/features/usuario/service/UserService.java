@@ -10,9 +10,12 @@ import com.example.skilllinkbackend.features.role.repository.IRoleRepository;
 import com.example.skilllinkbackend.features.usuario.dto.RegisteredUserResponseDTO;
 import com.example.skilllinkbackend.features.usuario.dto.UserRegisterRequestDTO;
 import com.example.skilllinkbackend.features.usuario.dto.UserResponseDTO;
+import com.example.skilllinkbackend.features.usuario.dto.UserUpdateDTO;
 import com.example.skilllinkbackend.features.usuario.model.User;
 import com.example.skilllinkbackend.features.usuario.repository.IUserRepository;
+import com.example.skilllinkbackend.shared.roledeletionhandler.RoleDeletionHandler;
 import com.example.skilllinkbackend.shared.rolegistrationhandler.RoleRegistrationHandler;
+import com.example.skilllinkbackend.shared.util.RoleUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,17 +33,23 @@ public class UserService implements IUserService {
     private final IRoleRepository roleRepository;
     private final TokenService tokenService;
     private final List<RoleRegistrationHandler> roleHandlers;
+    private final RoleUtil roleUtil;
+    private final List<RoleDeletionHandler> deletionHandlers;
 
     public UserService(IUserRepository userRepository,
                        IPasswordValidationService passwordValidationService,
                        IRoleRepository roleRepository,
                        TokenService tokenService,
-                       List<RoleRegistrationHandler> roleHandlers) {
+                       List<RoleRegistrationHandler> roleHandlers,
+                       RoleUtil roleUtil,
+                       List<RoleDeletionHandler> deletionHandlers) {
         this.userRepository = userRepository;
         this.passwordValidationService = passwordValidationService;
         this.roleRepository = roleRepository;
         this.tokenService = tokenService;
         this.roleHandlers = roleHandlers;
+        this.roleUtil = roleUtil;
+        this.deletionHandlers = deletionHandlers;
     }
 
     @Override
@@ -91,6 +100,40 @@ public class UserService implements IUserService {
         User user = userRepository.findByUserId(id)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         return new UserResponseDTO(user);
+    }
+
+    @Override
+    public UserResponseDTO updateUser(Long id, UserUpdateDTO userDto) {
+        User user = userRepository.findByUserId(id)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+        user.update(userDto, roleUtil.getRolesFromEnum(userDto.roles()));
+
+        // Borrar el registro de ese usuario(si existiera) de las tablas de roles
+        deleteRolesForUser(id, Set.of(RolesEnum.MENTOR));
+
+        // Registrar el usuario en las tablas de roles asignados(mentors, mentee...)
+        for (RolesEnum role : userDto.roles()){
+            roleHandlers.stream()
+                    .filter(handler -> handler.supports() == role)
+                    .findFirst()
+                    .ifPresent(handler -> handler.handle(user, new UserRegisterRequestDTO(userDto)));
+        }
+
+        return new UserResponseDTO(user);
+    }
+
+    /**
+     * Elimina el registro(por userId) de las tablas de roles(mentors, mentee...) si existe
+     * @param userId
+     * @param rolesToDelete
+     */
+    private void deleteRolesForUser(Long userId, Set<RolesEnum> rolesToDelete) {
+        for (RolesEnum role: rolesToDelete){
+            deletionHandlers.stream()
+                    .filter(handler -> handler.supports() == role)
+                    .findFirst()
+                    .ifPresent(handler -> handler.deleteIfExistsByUserId(userId));
+        }
     }
 
     private void validateUserUniqueness(UserRegisterRequestDTO userDto) {

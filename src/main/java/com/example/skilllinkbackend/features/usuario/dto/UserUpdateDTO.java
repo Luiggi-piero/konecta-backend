@@ -7,8 +7,13 @@ import jakarta.validation.constraints.*;
 
 import java.util.Set;
 
-@Schema(description = "Datos necesarios para crear un usuario")
-public record UserRegisterRequestDTO(
+@Schema(description = "Datos necesarios para actualizar un usuario")
+public record UserUpdateDTO(
+
+        @NotNull
+        @Positive(message = "El id debe ser un número positivo")
+        Long userId,
+
         @Schema(description = "Nombre del usuario", example = "Alexey")
         @NotBlank
         @Size(min = 2, max = 30)
@@ -49,17 +54,4 @@ public record UserRegisterRequestDTO(
 
         MentorRegisterDTO mentor// 👈 Solo aplica si el rol es MENTOR
 ) {
-    public UserRegisterRequestDTO(UserUpdateDTO userDto) {
-            this(
-                    userDto.firstName(),
-                    userDto.lastName(),
-                    userDto.goals(),
-                    userDto.email(),
-                    userDto.password(),
-                    userDto.biography(),
-                    userDto.photo(),
-                    userDto.roles(),
-                    userDto.mentor()
-            );
-    }
 }

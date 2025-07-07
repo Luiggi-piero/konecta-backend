@@ -5,6 +5,7 @@ import com.example.skilllinkbackend.config.responses.DataResponse;
 import com.example.skilllinkbackend.features.usuario.dto.RegisteredUserResponseDTO;
 import com.example.skilllinkbackend.features.usuario.dto.UserRegisterRequestDTO;
 import com.example.skilllinkbackend.features.usuario.dto.UserResponseDTO;
+import com.example.skilllinkbackend.features.usuario.dto.UserUpdateDTO;
 import com.example.skilllinkbackend.features.usuario.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -117,5 +118,15 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDTO findByUserId(@PathVariable Long id) {
         return userService.findByUserId(id);
+    }
+
+    @SecurityRequirement(name = "bearer-key")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    @Transactional
+    public UserResponseDTO updateUser(
+            @PathVariable Long id,
+            @RequestBody @Valid UserUpdateDTO userDto) {
+        return userService.updateUser(id, userDto);
     }
 }

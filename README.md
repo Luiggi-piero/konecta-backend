@@ -35,7 +35,7 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
 
 | Método | Endpoint          | Reglas de negocio |
 |--------|-------------------|-------------------|
-| POST   | `/users/register` | - Todos los campos son obligatorios, por lo tanto, es necesario verificar si todos los campos se están ingresando correctamente.<br>- La API no debe permitir el registro de usuarios duplicados (con el mismo correo) y debe tener al menos un número y una letra mayúscula.<br>- Asignar el rol USER por defecto.<br>- La API debe retornar la información del nuevo usuario y el token. |
+| POST   | `/users/register` | - Verificar si todos los campos obligatorios se están ingresando correctamente.<br>- La API no debe permitir el registro de usuarios duplicados (con el mismo correo) y debe tener al menos un número y una letra mayúscula.<br>- Asignar el rol USER por defecto.<br>- La API debe retornar la información del nuevo usuario y el token. <br>- Si elige el rol MENTOR, la propiedad mentor es necesaria y de forma similar para el rol MENTEE con la propiedad mentee. <br>- Si el correo ya existe retornar un código HTTP 409. <br>- Si la contraseña tiene menos de 8 o más de 15 caracteres retornar un 400.<br>- Si la contraseña no tiene al menos un letra mayúscula y un número retornar un 400.|
 | GET    | `/users`          | - Retornar los primeros 10 resultados ordenados por id.<br>- Devolver todos los atributos menos la contraseña.<br>- Obtener la respuesta con paginación para controlar el volumen de los datos.<br>- Solo el rol ADMIN puede obtener todos los usuarios. |
 
 </details>
@@ -92,10 +92,10 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
 
 | Método  | Endpoint              | Reglas de negocio |
 |---------|-----------------------|-------------------|
-| POST    | `/projects`           | - Si algún campo obligatorio no se completa mostrar un error 400.<br>- Si el usuario relacionado al id del creador no existe retornar un 404.<br>- Si algún correo del lista de miembros no existe retornar un 404.<br>- Si algún id del lista de categorías no existe retornar un 404.<br>- Si la creación fue exitosa retornar un 201.<br>- Si la creación fue exitosa en la cabecera indicar la URI al nuevo recurso. |
+| POST    | `/projects`           | - Si algún campo obligatorio no se completa mostrar un error 400.<br>- Si el usuario relacionado al id del creador no existe retornar un 404.<br>- Si algún correo del lista de miembros no existe como aprendiz retornar un 404.<br>- Si algún id del lista de categorías no existe retornar un 404.<br>- Si la creación fue exitosa retornar un 201.<br>- Si la creación fue exitosa en la cabecera indicar la URI al nuevo recurso.|
 | GET     | `/projects`           | - Retorno paginado.<br>- Por defecto el tamaño de la página es de 10.<br>- Por defecto el ordenamiento es por el id. |
 | GET     | `/projects/{id}`      | - Si el proyecto no existe retornar un 404. |
-| POST    | `/projects/{id}`      | - Si el proyecto no existe retornar un 404.<br>- Si algún campo obligatorio no se completa mostrar un error 400.<br>- Si el usuario relacionado al id del creador no existe retornar un 404.<br>- Si algún correo del lista de miembros no existe retornar un 404.<br>- Si algún id del lista de categorías no existe retornar un 404. |
+| UPDATE  | `/projects/{id}`      | - Si el proyecto no existe retornar un 404.<br>- Si algún campo obligatorio no se completa mostrar un error 400.<br>- Si el usuario relacionado al id del creador no existe retornar un 404.<br>- Si algún correo del lista de miembros no existe retornar un 404.<br>- Si algún id del lista de categorías no existe retornar un 404. |
 | DELETE  | `/projects/{id}`      | - Si el proyecto no existe retornar un código HTTP 404.<br>- Si la eliminación es exitosa retornar un 204.<br>- Realizar una eliminación lógica. |
 
 </details>

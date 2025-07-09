@@ -133,7 +133,7 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
      spring.datasource.password=${DB_PASSWORD}
      api.security.secret=${JWT_SECRET}
 
-  3. Crea un base de datos vacía con el nombre rolesprueba2_db
+  3. Crea un base de datos vacía con el nombre konecta
   
   4. Ejecuta el proyecto
 

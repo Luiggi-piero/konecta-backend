@@ -1,9 +1,9 @@
 package com.example.skilllinkbackend.features.project.validations.creation;
 
 import com.example.skilllinkbackend.config.exceptions.NotFoundException;
+import com.example.skilllinkbackend.features.mentee.model.Mentee;
+import com.example.skilllinkbackend.features.mentee.repository.IMenteeRepository;
 import com.example.skilllinkbackend.features.project.dto.ProjectRegisterDTO;
-import com.example.skilllinkbackend.features.usuario.model.User;
-import com.example.skilllinkbackend.features.usuario.repository.IUserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,19 +11,19 @@ import java.util.List;
 @Component
 public class ActiveMembersValidator implements ProjectCreationValidation {
 
-    private final IUserRepository userRepository;
+    private final IMenteeRepository menteeRepository;
 
-    public ActiveMembersValidator(IUserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ActiveMembersValidator(IMenteeRepository menteeRepository) {
+        this.menteeRepository = menteeRepository;
     }
 
     @Override
     public void validate(ProjectRegisterDTO projectRegisterDTO) {
-        List<User> existingEmails = userRepository.findExistingEmails(projectRegisterDTO.members());
+        List<Mentee> existingEmails = menteeRepository.findExistingEmails(projectRegisterDTO.members());
         boolean allExist = existingEmails.size() == projectRegisterDTO.members().size();
 
         if (!allExist) {
-            throw new NotFoundException("Al menos un miembro del proyecto no existe");
+            throw new NotFoundException("Al menos un miembro del proyecto no existe, todos los miembros deben ser aprendices");
         }
     }
 }

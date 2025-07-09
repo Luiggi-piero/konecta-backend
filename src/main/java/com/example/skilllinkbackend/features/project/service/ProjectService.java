@@ -3,6 +3,8 @@ package com.example.skilllinkbackend.features.project.service;
 import com.example.skilllinkbackend.config.exceptions.NotFoundException;
 import com.example.skilllinkbackend.features.category.model.Category;
 import com.example.skilllinkbackend.features.category.repository.ICategoryRepository;
+import com.example.skilllinkbackend.features.mentee.model.Mentee;
+import com.example.skilllinkbackend.features.mentee.repository.IMenteeRepository;
 import com.example.skilllinkbackend.features.project.dto.ProjectRegisterDTO;
 import com.example.skilllinkbackend.features.project.dto.ProjectResponseDTO;
 import com.example.skilllinkbackend.features.project.dto.ProjectUpdateDTO;
@@ -26,25 +28,28 @@ public class ProjectService implements IProjectService {
     private final IUserRepository userRepository;
     private final ICategoryRepository categoryRepository;
     private final List<ProjectEditionValidation> editionValidators;
+    private final IMenteeRepository menteeRepository;
 
     public ProjectService(
             IProjectRepository projectRepository,
             List<ProjectCreationValidation> creationValidators,
             IUserRepository userRepository,
             ICategoryRepository categoryRepository,
-            List<ProjectEditionValidation> editionValidators) {
+            List<ProjectEditionValidation> editionValidators,
+            IMenteeRepository menteeRepository) {
         this.projectRepository = projectRepository;
         this.creationValidators = creationValidators;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.editionValidators = editionValidators;
+        this.menteeRepository = menteeRepository;
     }
 
     @Override
     public ProjectResponseDTO createProject(ProjectRegisterDTO projectRegisterDTO) {
         creationValidators.forEach(v -> v.validate(projectRegisterDTO));
         User creator = userRepository.findByUserId(projectRegisterDTO.creatorId()).get();
-        List<User> members = userRepository.findExistingEmails(projectRegisterDTO.members());
+        List<Mentee> members = menteeRepository.findExistingEmails(projectRegisterDTO.members());
         List<Category> categories = categoryRepository.findExistingIds(projectRegisterDTO.categoriesId());
 
         Project project = new Project(projectRegisterDTO, creator, members, categories);
@@ -70,7 +75,7 @@ public class ProjectService implements IProjectService {
         editionValidators.forEach(v -> v.validate(projectUpdateDTO));
         Project project = projectRepository.findById(id).get();
         User creator = userRepository.findByUserId(projectUpdateDTO.creatorId()).get();
-        List<User> members = userRepository.findExistingEmails(projectUpdateDTO.members());
+        List<Mentee> members = menteeRepository.findExistingEmails(projectUpdateDTO.members());
         List<Category> categories = categoryRepository.findExistingIds(projectUpdateDTO.categoriesId());
 
         project.update(projectUpdateDTO, creator, members, categories);

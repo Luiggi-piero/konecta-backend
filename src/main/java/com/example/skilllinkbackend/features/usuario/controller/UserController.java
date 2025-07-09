@@ -120,6 +120,15 @@ public class UserController {
         return userService.findByUserId(id);
     }
 
+    @Operation(
+            summary = "Actualizar un usuario existente",
+            description = "Solo accesible por usuarios con rol ADMIN",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente"),
+                    @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
+            }
+    )
     @SecurityRequirement(name = "bearer-key")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")

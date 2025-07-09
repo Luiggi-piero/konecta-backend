@@ -1,5 +1,6 @@
 package com.example.skilllinkbackend.features.usuario.dto;
 
+import com.example.skilllinkbackend.features.mentee.dto.MenteeRegisterDTO;
 import com.example.skilllinkbackend.features.mentor.dto.MentorRegisterDTO;
 import com.example.skilllinkbackend.features.role.model.RolesEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,6 +53,8 @@ public record UserUpdateDTO(
         @NotEmpty
         Set<RolesEnum> roles,
 
-        MentorRegisterDTO mentor// 👈 Solo aplica si el rol es MENTOR
+        MentorRegisterDTO mentor, // 👈 Solo aplica si el rol es MENTOR
+
+        MenteeRegisterDTO mentee // 👈 Solo aplica si el rol es MENTEE
 ) {
 }

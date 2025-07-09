@@ -68,8 +68,6 @@ public class UserService implements IUserService {
 
         User userResponse = userRepository.save(user);
         String token = tokenService.generateToken(userResponse);
-        
-        // TODO: SI TIENE EL ROL MENTEE EN user.getRoles: CREAR UN MENTEE
 
         // Delegar manejo de roles a sus handlers
         // Si el rol es MENTOR -> crea un mentor, usa MentorRegistrationHandler
@@ -109,7 +107,7 @@ public class UserService implements IUserService {
         user.update(userDto, roleUtil.getRolesFromEnum(userDto.roles()));
 
         // Borrar el registro de ese usuario(si existiera) de las tablas de roles
-        deleteRolesForUser(id, Set.of(RolesEnum.MENTOR));
+        deleteRolesForUser(id, Set.of(RolesEnum.MENTOR, RolesEnum.MENTEE));
 
         // Registrar el usuario en las tablas de roles asignados(mentors, mentee...)
         for (RolesEnum role : userDto.roles()){

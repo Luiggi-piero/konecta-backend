@@ -1,6 +1,7 @@
 package com.example.skilllinkbackend.features.project.dto;
 
 import com.example.skilllinkbackend.features.category.dto.CategoryResponseDTO;
+import com.example.skilllinkbackend.features.mentee.dto.MenteeResponseDTO;
 import com.example.skilllinkbackend.features.project.model.Project;
 import com.example.skilllinkbackend.features.usuario.dto.UserResponseDTO;
 
@@ -16,7 +17,7 @@ public record ProjectResponseDTO(
         LocalDateTime endDate,
         String visibility,
         boolean enabled,
-        List<UserResponseDTO> members,
+        List<MenteeResponseDTO> members,
         List<CategoryResponseDTO> categories
 ) {
     public ProjectResponseDTO(Project project) {
@@ -29,7 +30,7 @@ public record ProjectResponseDTO(
                 project.getEndDate(),
                 project.getVisibility(),
                 project.isEnabled(),
-                project.getMembers().stream().map(UserResponseDTO::new).toList(),
+                project.getMembers().stream().map(MenteeResponseDTO::new).toList(),
                 project.getCategories().stream().map(CategoryResponseDTO::new).toList()
         );
     }

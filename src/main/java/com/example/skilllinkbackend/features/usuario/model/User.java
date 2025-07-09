@@ -39,9 +39,6 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "members")
-    private List<Project> projects;
-
     public User() {
     }
 

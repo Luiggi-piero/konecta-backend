@@ -1,6 +1,7 @@
 package com.example.skilllinkbackend.features.project.model;
 
 import com.example.skilllinkbackend.features.category.model.Category;
+import com.example.skilllinkbackend.features.mentee.model.Mentee;
 import com.example.skilllinkbackend.features.project.dto.ProjectRegisterDTO;
 import com.example.skilllinkbackend.features.project.dto.ProjectUpdateDTO;
 import com.example.skilllinkbackend.features.usuario.model.User;
@@ -30,11 +31,11 @@ public class Project {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_projects",
+            name = "mentees_projects",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "mentee_id")
     )
-    private List<User> members;
+    private List<Mentee> members;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -47,7 +48,7 @@ public class Project {
     public Project() {
     }
 
-    public Project(ProjectRegisterDTO projectRegisterDTO, User creator, List<User> members, List<Category> categories) {
+    public Project(ProjectRegisterDTO projectRegisterDTO, User creator, List<Mentee> members, List<Category> categories) {
         this.creator = creator;
         this.name = projectRegisterDTO.name();
         this.description = projectRegisterDTO.description();
@@ -122,11 +123,11 @@ public class Project {
         this.enabled = enabled;
     }
 
-    public List<User> getMembers() {
+    public List<Mentee> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(List<Mentee> members) {
         this.members = members;
     }
 
@@ -138,7 +139,7 @@ public class Project {
         this.categories = categories;
     }
 
-    public void update(ProjectUpdateDTO projectUpdateDTO, User creator, List<User> members, List<Category> categories) {
+    public void update(ProjectUpdateDTO projectUpdateDTO, User creator, List<Mentee> members, List<Category> categories) {
         this.id = projectUpdateDTO.id();
         this.creator = creator;
         this.name = projectUpdateDTO.name();

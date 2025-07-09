@@ -39,7 +39,7 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
 | GET    | `/users`          | - Retornar los primeros 10 resultados ordenados por id.<br>- Devolver todos los atributos menos la contraseña.<br>- Obtener la respuesta con paginación para controlar el volumen de los datos.<br>- Solo el rol ADMIN puede obtener todos los usuarios. |
 | GET    | `/users/{id}`     | - Retornar el usuario que coincida con el id y que además se encuentre habilitado.<br>- Si no encuentra el usuario retornar un 404.<br>- Solo el rol ADMIN puede buscar usuarios. |
 | UPDATE | `/users/{id}`     | - Si no se completan los campos obligatorios retorna un 400.<br>- Si no encuentra el usuario retornar un 404.<br>- Solo el rol ADMIN puede actualizar usuarios. <br>- Si elige el rol MENTOR, la propiedad mentor es necesaria y de forma similar para el rol MENTEE con la propiedad mentee. <br>- Si el correo ya existe retornar un código HTTP 409. <br>- Si la contraseña tiene menos de 8 o más de 15 caracteres retornar un 400.<br>- Si la contraseña no tiene al menos un letra mayúscula y un número retornar un 400.|
-| DELEE  | `/users/{id}`     | - Si la eliminación es exitosa retornar un 204.<br>- Si no encuentra el usuario retornar un 404.<br>- Solo el rol ADMIN puede eliminar usuarios. |
+| DELETE  | `/users/{id}`     | - Si la eliminación es exitosa retornar un 204.<br>- Si no encuentra el usuario retornar un 404.<br>- Solo el rol ADMIN puede eliminar usuarios. |
 
 </details>
 

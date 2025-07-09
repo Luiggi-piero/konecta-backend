@@ -103,7 +103,7 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
 
 ## Requerimientos previos
 
-- **JDK: Java 17 o superior**
+- **JDK: Java 21 o superior**
 - **Gestor de dependencias: Maven 4.0.0**
 - **Spring Boot 3.5.0**
 - **Base de datos MySQL o PostgreSQL (cambiar la configuración de application.properties)**
@@ -113,17 +113,17 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
   1. Clona el repositorio
      
      ```bash
-     git clone https://github.com/Luiggi-piero/roles-prueba2.git
-     cd roles-prueba2
+     git clone https://github.com/Luiggi-piero/konecta-backend.git
+     cd konecta-backend
   2. Configura las variables de entorno para la conexión a la base de datos
 
      ```yaml
-     spring.application.name=rolesprueba
+     spring.application.name=konecta-backend
      spring.jpa.hibernate.ddl-auto=update
 
-     #spring.datasource.url=jdbc:mysql://localhost:3306/rolesprueba?useSSL=false&serverTimezone=UTC
+     #spring.datasource.url=jdbc:mysql://localhost:3306/konecta?useSSL=false&serverTimezone=UTC
      #conexion con postgresql
-     spring.datasource.url=jdbc:postgresql://localhost:5432/rolesprueba2_db
+     spring.datasource.url=jdbc:postgresql://localhost:5432/konecta
      spring.datasource.driver-class-name=org.postgresql.Driver
 
      spring.datasource.username=${DB_USERNAME}
@@ -141,7 +141,8 @@ Swagger está configurado para generar documentación de la API automáticamente
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
-![image](https://github.com/user-attachments/assets/1583800c-2286-49b7-bbf9-928a588debf4)
+![image](https://github.com/user-attachments/assets/9d909024-f60d-442a-a63a-d02528599d6c)
+
 
 
 ## Tecnologías utilizadas
@@ -161,7 +162,8 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
           │   ├── config       
           │   |   ├── exceptions       -> Exception handling.
           |   |   ├── responses        -> Response format.
-          |   |   └── security         -> Security settings.
+          |   |   ├── security         -> Security settings.
+          |   |   └── springdoc        -> Spring doc configuration.
           │   ├── features
           │   |   ├── auth             -> Authentication.
           |   |   ├── category
@@ -178,7 +180,9 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
           |   |   |   ├── model        -> Domain feature layer.
           |   |   |   ├── repository   -> Data persistence layer.
           |   |   |   ├── service      -> Business logic layer. 
-          |   |   |   └── validations  -> Creation and editing validations.      
+          |   |   |   └── validations  -> Creation and editing validations.
+          |   |   ├── mentor 
+          |   |   ├── mentee 
           |   |   ├── role   
           |   |   └── usuario   
           └── resources

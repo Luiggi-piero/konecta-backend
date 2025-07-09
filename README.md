@@ -105,7 +105,7 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
 
 - **JDK: Java 21 o superior**
 - **Gestor de dependencias: Maven 4.0.0**
-- **Spring Boot 3.5.0**
+- **Spring Boot 3.3.5**
 - **Base de datos MySQL o PostgreSQL (cambiar la configuración de application.properties)**
 
 ## Configuración 

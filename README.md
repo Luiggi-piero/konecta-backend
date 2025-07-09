@@ -184,7 +184,11 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
           |   |   ├── mentor 
           |   |   ├── mentee 
           |   |   ├── role   
-          |   |   └── usuario   
+          |   |   └── usuario 
+          |   └── shared                     
+          │      ├── roledeletionhandler
+          |      ├── roleregistrationhandler        
+          |      └── util             -> Reusable items.
           └── resources
               └── application.properties -> Configuration app.
         

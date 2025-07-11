@@ -118,20 +118,33 @@ API Rest desarrollada en Java con Spring Boot para la gestión de usuarios(login
      ```bash
      git clone https://github.com/Luiggi-piero/konecta-backend.git
      cd konecta-backend
-  2. Configura las variables de entorno para la conexión a la base de datos
+  2. Configura las variables de entorno para la conexión a la base de datos desde `application-prod.yml`
 
      ```yaml
-     spring.application.name=konecta-backend
-     spring.jpa.hibernate.ddl-auto=update
-
-     #spring.datasource.url=jdbc:mysql://localhost:3306/konecta?useSSL=false&serverTimezone=UTC
-     #conexion con postgresql
-     spring.datasource.url=jdbc:postgresql://localhost:5432/konecta
-     spring.datasource.driver-class-name=org.postgresql.Driver
-
-     spring.datasource.username=${DB_USERNAME}
-     spring.datasource.password=${DB_PASSWORD}
-     api.security.secret=${JWT_SECRET}
+     spring:
+      datasource:
+        url: ${DB_URL:jdbc:postgresql://localhost:5432/konecta}
+        username: ${DB_USER}
+        password: ${DB_PASS}
+        driver-class-name: org.postgresql.Driver
+      jpa:
+    
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+    
+      server:
+        port: 8080
+    
+      konecta:
+        cors:
+          allowed-origins: "*"
+          allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+          allowed-headers: "*"
+    
+      security:
+        secret: ${JWT_SECRET}  # Get from env vars
+        expiration-ms: ${JWT_EXPIRATION_MS:86400000}
 
   3. Crea un base de datos vacía con el nombre konecta
   
@@ -210,7 +223,7 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 > * Cambia a enabled 1 todos los roles
 > * Registra un usuario
 > * Modifica la tabla users_roles: agrega un registro para asignar al usuario creado el rol ADMIN
-> * Agrega la configuración de la bd en application.properties
+> * Agrega la configuración de la bd en `application-prod.yml`
 > * Para aquellos que no tienen la zona horaria GMT-5 modificar el archivo ...TokenService (para indicar la expiración del token)
          
 
